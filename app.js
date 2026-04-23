@@ -11,6 +11,8 @@ const SCHOOL_ALIASES = {
     "skv malviya": "SKV Malviya",
     "skv": "SKV Malviya", // Mapped to SKV Malviya as requested
     "kv tughlaka bad": "KV Tughlakabad",
+    "kv tughlakabad": "KV Tughlakabad",
+    "kendriya vidyalaya tughlakabad": "KV Tughlakabad",
     "kendriya vidyalaya tuglakapad": "KV Tughlakabad", // Handling spelling variation
     "kendriya vidyalaya tuglakabad": "KV Tughlakabad",
     "kv tuglakabad": "KV Tughlakabad",
