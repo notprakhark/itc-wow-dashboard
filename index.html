@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ITC WOW - Habit Card Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <div class="header-content">
+                <div class="logo-area">
+                    <div class="logo-circle"></div>
+                    <h1>ITC WOW <span>Habit Card Pre-Implementation Questionnaire Response Tracker</span></h1>
+                </div>
+                <div class="header-actions">
+                    <div class="last-updated">
+                        <span class="status-indicator"></span>
+                        <span id="update-time">Loading live data...</span>
+                    </div>
+                    <a href="insights.html" class="btn-primary">View Deep Insights &rarr;</a>
+                </div>
+            </div>
+        </header>
+
+        <main class="dashboard-main">
+            <!-- Bento Grid Metrics & Map -->
+            <section class="bento-grid">
+                <div class="metric-card bento-card-1">
+                    <h3 class="metric-title">Total Surveys</h3>
+                    <div class="metric-value" id="val-total-surveys">-</div>
+                    <div class="metric-subtitle">Combined Students & Teachers</div>
+                </div>
+                <div class="metric-card bento-card-2">
+                    <h3 class="metric-title">Schools Covered</h3>
+                    <div class="metric-value" id="val-total-schools">-</div>
+                    <div class="metric-subtitle">Across all zones</div>
+                </div>
+                <div class="bento-map-card">
+                    <div id="map"></div>
+                </div>
+                <div class="metric-card bento-card-4">
+                    <h3 class="metric-title">Students Reached</h3>
+                    <div class="metric-value" id="val-student-surveys">-</div>
+                    <div class="metric-subtitle">Responses collected</div>
+                </div>
+                <div class="metric-card bento-card-5">
+                    <h3 class="metric-title">Teachers Reached</h3>
+                    <div class="metric-value" id="val-teacher-surveys">-</div>
+                    <div class="metric-subtitle">Responses collected</div>
+                </div>
+            </section>
+
+            <!-- Charts Section -->
+            <section class="charts-section">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h2>Surveys Collected Over Time</h2>
+                    </div>
+                    <div class="chart-body">
+                        <canvas id="timelineChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h2>Demographics (City)</h2>
+                    </div>
+                    <div class="chart-body chart-body-pie">
+                        <canvas id="cityChart"></canvas>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="charts-section insights-section">
+                <div class="chart-card full-width">
+                    <div class="chart-header">
+                        <h2>Initial Awareness: Waste Segregation</h2>
+                        <p class="chart-description">"Do you know what 'waste segregation' means?"</p>
+                    </div>
+                    <div class="chart-body">
+                        <canvas id="awarenessChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Leaderboard Section -->
+            <section class="leaderboard-section">
+                <div class="table-card">
+                    <div class="table-header">
+                        <h2>School Progress Tracker</h2>
+                        <div class="search-box">
+                            <input type="text" id="schoolSearch" placeholder="Search schools...">
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table id="schoolsTable">
+                            <thead>
+                                <tr>
+                                    <th>School Name</th>
+                                    <th>City</th>
+                                    <th>Students</th>
+                                    <th>Teachers</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody id="schoolsTableBody">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer class="dashboard-footer">
+            <p>Strictly to be remained within ITC organisation and partner NGO's. Confidential.</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

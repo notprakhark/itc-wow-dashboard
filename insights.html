@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deep Insights - ITC WOW Questionnaire</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <div class="header-content">
+                <div class="logo-area">
+                    <div class="logo-circle"></div>
+                    <h1>ITC WOW <span>Deep Insights & Analytics</span></h1>
+                </div>
+                <div class="header-actions">
+                    <a href="index.html" class="btn-primary">&larr; Back to Tracker</a>
+                </div>
+            </div>
+        </header>
+
+        <main class="dashboard-main">
+            <section class="charts-section">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h2>Household Waste Disposal Methods</h2>
+                        <p class="chart-description">"How does daily waste get disposed of from your household?"</p>
+                    </div>
+                    <div class="chart-body">
+                        <canvas id="disposalChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h2>Number of Separate Dustbins at Home</h2>
+                    </div>
+                    <div class="chart-body chart-body-pie">
+                        <canvas id="binsChart"></canvas>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer class="dashboard-footer">
+            <p>Strictly to be remained within ITC organisation and partner NGO's. Confidential.</p>
+        </footer>
+    </div>
+
+    <script src="insights.js"></script>
+</body>
+</html>
