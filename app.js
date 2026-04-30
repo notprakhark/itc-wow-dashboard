@@ -1,4 +1,4 @@
-const STUDENT_SHEET_URL = 'https://docs.google.com/spreadsheets/d/1aCYS0wW0Hid1xNFjSvRxwzZ2f_YEoIzGwuqG9LHBU18/gviz/tq?tqx=out:json';
+const STUDENT_SHEET_URL = 'https://docs.google.com/spreadsheets/d/1dTUyhGPsye7yobfpfSPV__SePpKAY3GWBizySyqmZMs/gviz/tq?tqx=out:json';
 const TEACHER_SHEET_URL = 'https://docs.google.com/spreadsheets/d/1W3JnbkFb3lu92m7fEn38JY3r56b7_V26WIFl5CnJWnE/gviz/tq?tqx=out:json';
 
 // Global Data
@@ -59,22 +59,22 @@ document.addEventListener('DOMContentLoaded', init);
 
 async function init() {
     updateTimestamp();
-    
+
     try {
         const [studentJson, teacherJson] = await Promise.all([
             fetchSheetData(STUDENT_SHEET_URL),
             fetchSheetData(TEACHER_SHEET_URL)
         ]);
-        
+
         studentData = parseSheetData(studentJson);
         teacherData = parseSheetData(teacherJson);
-        
+
         processData();
         renderMetrics();
         renderCharts();
         renderMap();
         renderLeaderboard();
-        
+
         // Setup Search
         document.getElementById('schoolSearch').addEventListener('input', (e) => {
             renderLeaderboard(e.target.value);
@@ -115,16 +115,16 @@ function parseSheetData(json) {
 
 function normalizeSchoolName(rawName) {
     if (!rawName) return "Not Specified";
-    
+
     let n = rawName.toString().toLowerCase().trim();
-    
+
     // Check aliases
     for (let key in SCHOOL_ALIASES) {
         if (n.includes(key)) {
             return SCHOOL_ALIASES[key];
         }
     }
-    
+
     // Title Case default
     return n.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
 }
@@ -136,7 +136,7 @@ function processData() {
     studentData.forEach(row => {
         const schoolName = normalizeSchoolName(row[2]);
         const city = normalizeCityName(row[3]);
-        
+
         if (!schoolStats[schoolName]) {
             schoolStats[schoolName] = { name: schoolName, students: 0, teachers: 0, city: city };
         }
@@ -178,7 +178,7 @@ function renderLeaderboard(filterText = '') {
 
         const tr = document.createElement('tr');
         const total = school.students + school.teachers;
-        
+
         tr.innerHTML = `
             <td><strong>${school.name}</strong></td>
             <td>${school.city}</td>
@@ -205,27 +205,27 @@ function renderCharts() {
 
 function renderMap() {
     if (mapInst) mapInst.remove();
-    
+
     // Center of Delhi
     mapInst = L.map('map').setView([28.6139, 77.2090], 11);
-    
+
     // Using a light, clean basemap that fits the theme
     L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
         attribution: '&copy; OpenStreetMap contributors',
         subdomains: 'abcd',
         maxZoom: 19
     }).addTo(mapInst);
-    
+
     // Add markers
     Object.values(schoolStats).forEach(school => {
         if (school.name === "Not Specified") return;
-        
+
         // Add slight random offset for schools without exact coordinates to prevent exact overlap
         let coords = SCHOOL_COORDINATES[school.name];
         if (!coords) {
-            coords = [28.6139 + (Math.random() - 0.5)*0.1, 77.2090 + (Math.random() - 0.5)*0.1];
+            coords = [28.6139 + (Math.random() - 0.5) * 0.1, 77.2090 + (Math.random() - 0.5) * 0.1];
         }
-        
+
         const total = school.students + school.teachers;
         L.circleMarker(coords, {
             radius: 8 + (total * 0.5), // Scale radius slightly by count
@@ -235,12 +235,12 @@ function renderMap() {
             opacity: 1,
             fillOpacity: 0.8
         }).addTo(mapInst)
-          .bindPopup(`<strong>${school.name}</strong><br>${school.city}<br>Total Surveys: ${total}`);
+            .bindPopup(`<strong>${school.name}</strong><br>${school.city}<br>Total Surveys: ${total}`);
     });
 
     // Add Recenter Button
     const RecenterControl = L.Control.extend({
-        onAdd: function(map) {
+        onAdd: function (map) {
             const btn = L.DomUtil.create('button', 'leaflet-bar leaflet-control');
             btn.innerHTML = '&#8634;'; // Circular arrow symbol
             btn.style.backgroundColor = 'white';
@@ -253,7 +253,7 @@ function renderMap() {
             btn.style.border = 'none';
             btn.style.borderBottom = '1px solid #ccc';
             btn.title = 'Recenter Map';
-            btn.onclick = function(e) {
+            btn.onclick = function (e) {
                 e.stopPropagation();
                 map.setView([28.6139, 77.2090], 11);
             }
@@ -265,34 +265,34 @@ function renderMap() {
 
 function renderTimelineChart() {
     const ctx = document.getElementById('timelineChart').getContext('2d');
-    
+
     // Group by Date (YYYY-MM-DD format extracted from timestamp)
     const dates = {};
     studentData.forEach(row => {
         let ts = row[0];
-        if(!ts) return;
+        if (!ts) return;
         // Google Viz sometimes returns Date(YYYY, M, D...) strings
         let dateStr = "Unknown";
-        if(typeof ts === 'string' && ts.startsWith('Date(')) {
+        if (typeof ts === 'string' && ts.startsWith('Date(')) {
             // "Date(2026,3,17,10,20,56)"
             const parts = ts.replace('Date(', '').replace(')', '').split(',');
-            if(parts.length >= 3) {
-                dateStr = `${parts[0]}-${String(parseInt(parts[1])+1).padStart(2,'0')}-${String(parts[2]).padStart(2,'0')}`;
+            if (parts.length >= 3) {
+                dateStr = `${parts[0]}-${String(parseInt(parts[1]) + 1).padStart(2, '0')}-${String(parts[2]).padStart(2, '0')}`;
             }
         } else {
             // Fallback for normal string
             try {
                 dateStr = new Date(ts).toISOString().split('T')[0];
-            } catch(e) {
-                dateStr = String(ts).split(' ')[0]; 
+            } catch (e) {
+                dateStr = String(ts).split(' ')[0];
             }
         }
-        
+
         dates[dateStr] = (dates[dateStr] || 0) + 1;
     });
 
     const sortedDates = Object.keys(dates).sort();
-    
+
     // Cumulative sum
     let cumulative = 0;
     const dataPoints = sortedDates.map(d => {
@@ -331,7 +331,7 @@ function renderTimelineChart() {
 
 function renderCityChart() {
     const ctx = document.getElementById('cityChart').getContext('2d');
-    
+
     const cities = {};
     studentData.forEach(row => {
         const city = normalizeCityName(row[3]);
@@ -340,7 +340,7 @@ function renderCityChart() {
 
     const labels = Object.keys(cities);
     const data = Object.values(cities);
-    
+
     // Green/Teal Palette
     const colors = ['#0d9488', '#14b8a6', '#2dd4bf', '#5eead4', '#99f6e4', '#ccfbf1'];
 
@@ -368,7 +368,7 @@ function renderCityChart() {
 
 function renderAwarenessChart() {
     const ctx = document.getElementById('awarenessChart').getContext('2d');
-    
+
     const answers = {};
     studentData.forEach(row => {
         // Col 13 is Q4
@@ -421,7 +421,7 @@ function animateValue(id, start, end, duration) {
     let increment = end > start ? 1 : -1;
     let stepTime = Math.abs(Math.floor(duration / range));
     let obj = document.getElementById(id);
-    let timer = setInterval(function() {
+    let timer = setInterval(function () {
         current += increment;
         obj.innerText = current;
         if (current == end) {

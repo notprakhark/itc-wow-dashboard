@@ -1,4 +1,4 @@
-const STUDENT_SHEET_URL = 'https://docs.google.com/spreadsheets/d/1aCYS0wW0Hid1xNFjSvRxwzZ2f_YEoIzGwuqG9LHBU18/gviz/tq?tqx=out:json';
+const STUDENT_SHEET_URL = 'https://docs.google.com/spreadsheets/d/1dTUyhGPsye7yobfpfSPV__SePpKAY3GWBizySyqmZMs/gviz/tq?tqx=out:json';
 
 let studentData = [];
 
